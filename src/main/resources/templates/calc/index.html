@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="operator" type="java.lang.String"*/-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>계산기</title>
+</head>
+<body>
+<!--포스트-->
+<form method="post">
+    <label>
+        <input autofocus name="a" type="number" th:value="${calcVo==null?0:calcVo.getA()}">
+<!--        값이 null 이면 터지기 때문에 null 이면 0을 아니면 대입받은 값을 전송 -->
+    </label>
+    <label>
+        <select name="operator" th:with="operator = ${calcVo == null ? '+': calcVo.getOperator()}">
+<!--            값이 null 이면 터지기 때문에 null 이면 +를 넣고 아닐 경우 입력받은 연산기호를 사용-->
+<!--            String operator = calcVo == null ? "+" calcVo.getOperator-->
+            <option value="+" th:selected="${operator.equals('+')}">+</option>
+            <option value="-" th:selected="${operator.equals('-')}">-</option>
+            <option value="*" th:selected="${operator.equals('*')}">*</option>
+            <option value="/" th:selected="${operator.equals('/')}">/</option>
+            <option value="%" th:selected="${operator.equals('%')}">%</option>
+<!--            th:selected 조건이 참일 때 selected 를 지정한다.-->
+        </select>
+    </label>
+        <label>
+            <input name="b" type="number" th:value="${calcVo==null?0:calcVo.getB()}">
+<!--            값이 null 이면 터지니까 null 이면 0 아니면 입력받은 값 대입-->
+        </label>
+    <input type="submit" value="계산하기">
+</form>
+<div th:if="${calcVo != null}">
+<!--    계산전은 null-->
+<!--    만약 계산한 값이 null 이 아니라면 = 계산을 했다면 계산한 값이 출력 -->
+<!--    th:if 참이면 랜더링을 하지 않는다 null 이 아니라면을 참으로 둠으로써 계산전에는 모습을 보이지 않게한다.-->
+<!--    th:text 해당 태그의 내부내용을 지정-->
+    <span th:text="${calcVo.getA()}"></span>
+    <span th:text="${calcVo.getOperator()}"></span>
+    <span th:text="${calcVo.getB()}"></span>
+    <span>=</span>
+    <span th:text="${result}"></span>
+</div>
+
+<!--<div th:each="i : ${#numbers.sequence(1,5)}" th:text="${i}"></div>-->
+<!--#numbers.sequence 1~5번까지의 배열-->
+<!--향상된 for문처럼 i를 배열만큼 반복 (div를 반복함) -->
+<!--th:text: 현재 i 값-->
+
+</body>
+</html>
